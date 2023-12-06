@@ -2,68 +2,21 @@ const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
 const homeDir = require('os').homedir();
-
-const devicesAndroid = {
-    '1080x2340': {
-        frameWidth: 1480,
-        frameHeight: 2740,
-        screenShotWidth: 1080,
-        screenShotHeight: 2340,
-        innerLeft: 200,
-        innerTop: 200,
-        innerWidth: 1080,
-        innerHeight: 2340,
-        cornerCutWidth: 0,
-        inch: 6,
-        name: 'pixel_5.png',
-        devices: [
-            'pixel_5'
-        ]
-    }
-};
-
-/**
- * The devices object. The key is the WIDTHxHEIGHT of the screenshot you make with the simulator.
- */
-const devicesIos = {
-    '1290x2796': {
-        frameWidth: 3242,
-        frameHeight: 6270,
-        screenShotWidth: 1290,
-        screenShotHeight: 2796,
-        innerLeft: 334,
-        innerTop: 310,
-        innerWidth: 2580,
-        innerHeight: 5592,
-        cornerCutWidth: 80,
-        inch: 6.7,
-        name: 'iphone_14_pro_max.png',
-        devices: [
-            'iphone_14_pro_max',
-            'iphone_15_pro_max'
-        ]
-    },
-    '750x1334': {
-        frameWidth: 1050,
-        frameHeight: 1934,
-        screenShotWidth: 750,
-        screenShotHeight: 1334,
-        innerLeft: 150,
-        innerTop: 300,
-        innerWidth: 750,
-        innerHeight: 1334,
-        cornerCutWidth: 0,
-        inch: 4.7,
-        name: 'iphone_se.png',
-        devices: [
-            'iphone_se'
-        ]
-    }
-};
+const frames = require("./frames.json");
 
 function die(message) {
     console.log(message);
     process.exit();
+}
+
+let framesPath = `${homeDir}/device-frame`;
+if (fs.existsSync(`${homeDir}/.device-frame.json`)) {
+    const json = JSON.parse(fs.readFileSync(`${homeDir}/.device-frame.json`, 'utf8'));
+    framesPath = json.deviceFramePath;
+}
+
+if (!fs.existsSync(framesPath)) {
+    die(`Path to device frames doesn't exist.`);
 }
 
 (async function () {
@@ -82,7 +35,7 @@ function die(message) {
     const screenPath = process.argv[3];
     const screenPathParts = path.parse(screenPath);
 
-    const devices = os === 'ios' ? devicesIos : devicesAndroid;
+    const devices = frames[os];
 
     if (!fs.existsSync(screenPath)) {
         die(`${screenPath} does not exist`);
@@ -107,7 +60,7 @@ function die(message) {
     const deviceInnerHeight = device.innerHeight * ratio;
     const cornerCutWidth = device.cornerCutWidth * ratio;
 
-    const frameDir = os === 'ios' ? 'frames/ios' : 'frames/android';
+    const frameDir = `${framesPath}/${os}`;
 
     const frameBuffer1 = await sharp(`${frameDir}/${device.name}`).resize(device.frameWidth * ratio).toFormat('png').toBuffer();
 

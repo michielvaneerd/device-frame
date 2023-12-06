@@ -1,0 +1,55 @@
+{
+    "ios": {
+        "1290x2796": {
+            "frameWidth": 3242,
+            "frameHeight": 6270,
+            "screenShotWidth": 1290,
+            "screenShotHeight": 2796,
+            "innerLeft": 334,
+            "innerTop": 310,
+            "innerWidth": 2580,
+            "innerHeight": 5592,
+            "cornerCutWidth": 80,
+            "inch": 6.7,
+            "name": "iphone_14_pro_max.png",
+            "devices": [
+                "iphone_14_pro_max",
+                "iphone_15_pro_max"
+            ]
+        },
+        "750x1334": {
+            "frameWidth": 1050,
+            "frameHeight": 1934,
+            "screenShotWidth": 750,
+            "screenShotHeight": 1334,
+            "innerLeft": 150,
+            "innerTop": 300,
+            "innerWidth": 750,
+            "innerHeight": 1334,
+            "cornerCutWidth": 0,
+            "inch": 4.7,
+            "name": "iphone_se.png",
+            "devices": [
+                "iphone_se"
+            ]
+        }
+    },
+    "android": {
+        "1080x2340": {
+            "frameWidth": 1480,
+            "frameHeight": 2740,
+            "screenShotWidth": 1080,
+            "screenShotHeight": 2340,
+            "innerLeft": 200,
+            "innerTop": 200,
+            "innerWidth": 1080,
+            "innerHeight": 2340,
+            "cornerCutWidth": 0,
+            "inch": 6,
+            "name": "pixel_5.png",
+            "devices": [
+                "pixel_5"
+            ]
+        }
+    }
+}
