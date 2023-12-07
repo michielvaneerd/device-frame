@@ -4,6 +4,8 @@ const path = require('path');
 const homeDir = require('os').homedir();
 const frames = require("./frames.json");
 
+const frameCache = {}; // Cache for frames sharp instances
+
 function die(message) {
     console.log(message);
     process.exit();
@@ -19,109 +21,57 @@ if (!fs.existsSync(framesPath)) {
     die(`Path to device frames doesn't exist.`);
 }
 
-(async function () {
+function getComposite(top, left, width, height) {
+    return {
+        top: top,
+        left: left,
+        input: {
+            create: {
+                width: width,
+                height: height,
+                channels: 4,
+                background: { r: 255, g: 255, b: 255, alpha: 1 }
+            }
+        },
+    };
+}
 
-    // Usage: node index.js OS PATH_TO_SCREENSHOT
-    // Based on width and height of screenPath, we know which frame we need to get.
-
-    if (process.argv.length < 4) {
-        die('Missing os and/or file argument');
-    }
-
-    const os = process.argv[2];
-    if (['ios', 'android'].indexOf(os) === -1) {
-        die('Unknown os');
-    }
-    const screenPath = process.argv[3];
-    const screenPathParts = path.parse(screenPath);
-
-    const devices = frames[os];
-
-    if (!fs.existsSync(screenPath)) {
-        die(`${screenPath} does not exist`);
-    }
-
-    // Get information for this screen (will be in screenBuffer.info.width and height)
-    const screenBuffer = await sharp(screenPath).toFormat('png').toBuffer({
+async function frameScreen(screenFullPath, os) {
+    const screenBuffer = await sharp(screenFullPath).toFormat('png').toBuffer({
         resolveWithObject: true
     });
     const screenWidth = screenBuffer.info.width;
     const screenHeight = screenBuffer.info.height;
     const deviceKey = `${screenWidth}x${screenHeight}`;
-
-    if (!(deviceKey in devices)) {
-        die(`Unknown screenshot width ${screenWidth} and height ${screenHeight}`);
+    if (!(deviceKey in frames[os])) {
+        throw new Error(`Unknown screenshot for os = ${os} and key = ${deviceKey}`);
     }
 
-    // Now we will have to resize the frame so the inner size is exactly the same as this screen.
-    const device = devices[deviceKey];
+    const device = frames[os][deviceKey];
     const ratio = device.innerWidth == screenWidth ? 1 : ((device.innerWidth - screenWidth) / device.innerWidth);
     const deviceInnerWidth = screenWidth;
     const deviceInnerHeight = device.innerHeight * ratio;
     const cornerCutWidth = device.cornerCutWidth * ratio;
 
-    const frameDir = `${framesPath}/${os}`;
-
-    const frameBuffer1 = await sharp(`${frameDir}/${device.name}`).resize(device.frameWidth * ratio).toFormat('png').toBuffer();
-
-    const composites = [];
-    if (cornerCutWidth) {
-        composites.push({
-            top: 0,
-            left: 0,
-            input: {
-                create: {
-                    width: cornerCutWidth,
-                    height: cornerCutWidth,
-                    channels: 4,
-                    background: { r: 255, g: 255, b: 255, alpha: 1 }
-                }
-            },
-        });
-        composites.push({
-            top: 0,
-            left: deviceInnerWidth - cornerCutWidth,
-            input: {
-                create: {
-                    width: cornerCutWidth,
-                    height: cornerCutWidth,
-                    channels: 4,
-                    background: { r: 255, g: 255, b: 255, alpha: 1 }
-                }
-            },
-        });
-        composites.push({
-            top: deviceInnerHeight - cornerCutWidth,
-            left: 0,
-            input: {
-                create: {
-                    width: cornerCutWidth,
-                    height: cornerCutWidth,
-                    channels: 4,
-                    background: { r: 255, g: 255, b: 255, alpha: 1 }
-                }
-            },
-        });
-        composites.push({
-            top: deviceInnerHeight - cornerCutWidth,
-            left: deviceInnerWidth - cornerCutWidth,
-            input: {
-                create: {
-                    width: cornerCutWidth,
-                    height: cornerCutWidth,
-                    channels: 4,
-                    background: { r: 255, g: 255, b: 255, alpha: 1 }
-                }
-            },
-        });
+    const framePath = `${framesPath}/${os}/${device.name}`;
+    const frameCacheKey = `${framePath}-${device.frameWidth * ratio}`;
+    if (!(frameCacheKey in frameCache)) {
+        frameCache[frameCacheKey] = sharp(framePath).resize(device.frameWidth * ratio).toFormat('png');
     }
+    const frameBuffer = await frameCache[frameCacheKey].clone().toBuffer();
 
+    const composites = cornerCutWidth ? [
+        getComposite(0, 0, cornerCutWidth, cornerCutWidth),
+        getComposite(0, deviceInnerWidth - cornerCutWidth, cornerCutWidth, cornerCutWidth),
+        getComposite(deviceInnerHeight - cornerCutWidth, 0, cornerCutWidth, cornerCutWidth),
+        getComposite(deviceInnerHeight - cornerCutWidth, deviceInnerWidth - cornerCutWidth, cornerCutWidth, cornerCutWidth)
+    ] : [];
     composites.push({
         input: screenBuffer.data,
         blend: 'out'
     });
     
-    const image1 = await sharp({
+    const image = await sharp({
         create: {
             width: deviceInnerWidth,
             height: deviceInnerHeight,
@@ -129,6 +79,8 @@ if (!fs.existsSync(framesPath)) {
             background: { r: 0, g: 0, b: 0, alpha: 0 }
         }
     }).composite(composites).toFormat('png').toBuffer();
+
+    const screenPathParts = path.parse(screenFullPath);
 
     await sharp({
         create: {
@@ -139,16 +91,71 @@ if (!fs.existsSync(framesPath)) {
         }
     }).composite([
         {
-            input: image1,
+            input: image,
             top: device.innerTop * ratio,
             left: device.innerLeft * ratio,
         },
         {
-            input: frameBuffer1,
+            input: frameBuffer,
         }
-    ]).toFile(`${screenPathParts.name}_framed.png`);
+    ]).toFile(`${screenPathParts.name}_framed${screenPathParts.ext}`);
 
-})();
+    console.log(`Written ${screenPathParts.name}_framed${screenPathParts.ext}`);
+}
 
+(async function () {
 
+    if (process.argv.length > 2 && process.argv[2] === 'validate') {
+        const messages = [];
+        // Validate all frames
+        Object.keys(frames).forEach(async function(os) {
+            console.log(os);
+            Object.keys(frames[os]).forEach(async function(dim) {
+                const device = frames[os][dim];
+                const path = `${framesPath}/${os}/${device.name}`;
+                console.log(path);
+                if (!fs.existsSync(path)) {
+                    messages.push(`Frame ${path} doesn't exist`);
+                    return;
+                }
+                const buff = await sharp(path).toFormat('png').toBuffer({
+                    resolveWithObject: true
+                });
+                if (buff.info.width != device.frameWidth || buff.info.height != device.frameHeight) {
+                    messages.push(`Size of ${path} (${buff.info.width}x${buff.info.height}) is different than the size in the frames.json file ${device.frameWidth}x${device.frameHeight}`);
+                    return;
+                }
+                messages.push(`OK for ${path}`);
+            });
+        });
+        messages.forEach(function(msg) {
+            console.error(msg);
+        });
+        process.exit();
+    }
 
+    if (process.argv.length < 4) {
+        die('Missing os or path argument');
+    }
+
+    const os = process.argv[2];
+    if (Object.keys(frames).indexOf(os) === -1) {
+        die(`Unknown os ${os}`);
+    }
+
+    const screensPath = process.argv[3];
+    if (!fs.existsSync(screensPath)) {
+        die(`Directory ${screensPath} does not exist`);
+    }
+
+    fs.readdirSync(screensPath).filter((value) => path.extname(value) === '.png').forEach(function(screenPath) {
+        try {
+            frameScreen(path.join(screensPath, screenPath), os);
+        } catch (ex) {
+            console.error(ex);
+        }
+    });
+
+    console.log('Finished');
+
+}());

@@ -13,8 +13,8 @@
             "inch": 6.7,
             "name": "iphone_14_pro_max.png",
             "devices": [
-                "iphone_14_pro_max",
-                "iphone_15_pro_max"
+                "iPhone 14 Pro Max",
+                "iPhone 15 Pro Max"
             ]
         },
         "750x1334": {
@@ -30,7 +30,7 @@
             "inch": 4.7,
             "name": "iphone_se.png",
             "devices": [
-                "iphone_se"
+                "iPhone SE"
             ]
         }
     },
@@ -48,7 +48,7 @@
             "inch": 6,
             "name": "pixel_5.png",
             "devices": [
-                "pixel_5"
+                "Pixel 5"
             ]
         }
     }
