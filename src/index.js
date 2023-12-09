@@ -11,14 +11,10 @@ function die(message) {
     process.exit();
 }
 
-let framesPath = `${homeDir}/device-frame`;
-if (fs.existsSync(`${homeDir}/.device-frame.json`)) {
-    const json = JSON.parse(fs.readFileSync(`${homeDir}/.device-frame.json`, 'utf8'));
-    framesPath = json.deviceFramePath;
-}
+const framesPath = `${homeDir}/Meta Devices`;
 
 if (!fs.existsSync(framesPath)) {
-    die(`Path to device frames doesn't exist.`);
+    die(`Path to the device frames doesn't exist. Download them from https://design.facebook.com/toolsandresources/devices/ and put them in your home directory.`);
 }
 
 function getComposite(top, left, width, height) {
@@ -36,7 +32,7 @@ function getComposite(top, left, width, height) {
     };
 }
 
-async function frameScreen(screenFullPath, os) {
+async function frameScreen(screenFullPath, os, destinationPath) {
     const screenBuffer = await sharp(screenFullPath).toFormat('png').toBuffer({
         resolveWithObject: true
     });
@@ -44,7 +40,7 @@ async function frameScreen(screenFullPath, os) {
     const screenHeight = screenBuffer.info.height;
     const deviceKey = `${screenWidth}x${screenHeight}`;
     if (!(deviceKey in frames[os])) {
-        throw new Error(`Unknown screenshot for os = ${os} and key = ${deviceKey}`);
+        throw new Error(`Unknown screenshot for ${screenFullPath} - os = ${os} and key = ${deviceKey}`);
     }
 
     const device = frames[os][deviceKey];
@@ -53,7 +49,7 @@ async function frameScreen(screenFullPath, os) {
     const deviceInnerHeight = device.innerHeight * ratio;
     const cornerCutWidth = device.cornerCutWidth * ratio;
 
-    const framePath = `${framesPath}/${os}/${device.name}`;
+    const framePath = `${framesPath}/${device.path}`;
     const frameCacheKey = `${framePath}-${device.frameWidth * ratio}`;
     if (!(frameCacheKey in frameCache)) {
         frameCache[frameCacheKey] = sharp(framePath).resize(device.frameWidth * ratio).toFormat('png');
@@ -70,7 +66,7 @@ async function frameScreen(screenFullPath, os) {
         input: screenBuffer.data,
         blend: 'out'
     });
-    
+
     const image = await sharp({
         create: {
             width: deviceInnerWidth,
@@ -81,6 +77,8 @@ async function frameScreen(screenFullPath, os) {
     }).composite(composites).toFormat('png').toBuffer();
 
     const screenPathParts = path.parse(screenFullPath);
+
+    const newFile = `${screenPathParts.name}_framed${screenPathParts.ext}`;
 
     await sharp({
         create: {
@@ -98,44 +96,50 @@ async function frameScreen(screenFullPath, os) {
         {
             input: frameBuffer,
         }
-    ]).toFile(`${screenPathParts.name}_framed${screenPathParts.ext}`);
+    ]).toFile(path.join(destinationPath, newFile));
 
     console.log(`Written ${screenPathParts.name}_framed${screenPathParts.ext}`);
+}
+
+async function validate() {
+    const messages = [];
+    // Validate all frames
+    for (const os in frames) {
+        for (const dim in frames[os]) {
+            const device = frames[os][dim];
+            const path = `${framesPath}/${device.path}`;
+            if (!fs.existsSync(path)) {
+                messages.push(`Frame ${path} doesn't exist`);
+                continue;
+            }
+            const buff = await sharp(path).toFormat('png').toBuffer({
+                resolveWithObject: true
+            });
+            if (dim !== `${device.screenShotWidth}x${device.screenShotHeight}`) {
+                messages.push(`Key ${dim} doesn't match defined frameWidth and frameHeight ${device.screenShotWidth}x${device.screenShotHeight}`);
+                continue;
+            }
+            if (buff.info.width != device.frameWidth || buff.info.height != device.frameHeight) {
+                messages.push(`Size of ${path} (${buff.info.width}x${buff.info.height}) is different than the size in the frames.json file ${device.frameWidth}x${device.frameHeight}`);
+                continue;
+            }
+            messages.push(`OK for ${path}`);
+        }
+    }
+    messages.forEach(function (msg) {
+        console.error(msg);
+    });
 }
 
 (async function () {
 
     if (process.argv.length > 2 && process.argv[2] === 'validate') {
-        const messages = [];
-        // Validate all frames
-        Object.keys(frames).forEach(async function(os) {
-            console.log(os);
-            Object.keys(frames[os]).forEach(async function(dim) {
-                const device = frames[os][dim];
-                const path = `${framesPath}/${os}/${device.name}`;
-                console.log(path);
-                if (!fs.existsSync(path)) {
-                    messages.push(`Frame ${path} doesn't exist`);
-                    return;
-                }
-                const buff = await sharp(path).toFormat('png').toBuffer({
-                    resolveWithObject: true
-                });
-                if (buff.info.width != device.frameWidth || buff.info.height != device.frameHeight) {
-                    messages.push(`Size of ${path} (${buff.info.width}x${buff.info.height}) is different than the size in the frames.json file ${device.frameWidth}x${device.frameHeight}`);
-                    return;
-                }
-                messages.push(`OK for ${path}`);
-            });
-        });
-        messages.forEach(function(msg) {
-            console.error(msg);
-        });
+        await validate();
         process.exit();
     }
 
     if (process.argv.length < 4) {
-        die('Missing os or path argument');
+        die('Missing os or path argument.');
     }
 
     const os = process.argv[2];
@@ -145,16 +149,23 @@ async function frameScreen(screenFullPath, os) {
 
     const screensPath = process.argv[3];
     if (!fs.existsSync(screensPath)) {
-        die(`Directory ${screensPath} does not exist`);
+        die(`Directory ${screensPath} does not exist.`);
     }
 
-    fs.readdirSync(screensPath).filter((value) => path.extname(value) === '.png').forEach(function(screenPath) {
+    const destinationPath = process.argv.length >= 5 ? process.argv[4] : '.';
+    if (!fs.existsSync(destinationPath)) {
+        die(`Destinaton directory ${destinationPath} doesn't exist.`);
+    }
+
+    const screens = fs.readdirSync(screensPath).filter((value) => path.extname(value) === '.png');
+    
+    for (const screen of screens) {
         try {
-            frameScreen(path.join(screensPath, screenPath), os);
+            await frameScreen(path.join(screensPath, screen), os, destinationPath);
         } catch (ex) {
             console.error(ex);
         }
-    });
+    }
 
     console.log('Finished');
 

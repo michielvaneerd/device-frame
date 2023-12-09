@@ -2,49 +2,42 @@
 
 Adds a device frame to all simulator screenshots in a directory.
 
-## Set up
+## Getting started
 
-This script requires the frames from the below download to be present on your system:
+Download the device frames from:
 
 https://design.facebook.com/toolsandresources/devices/
 
-See the [frames.json](./src/frames.json) file for available frames and the names you should give to the frames.
-For example the iPhone 14 Pro Max frame should be called iphone_14_pro_max.png.
-
-Put them in `~/device-frame`. This location can be adjusted if you want by specifying the `~/.device-frame.json` file:
-
-```json
-{
-    "deviceFramePath": "some/location"
-}
-```
-
-Note that the iOS frames should be placed inside the `ios` and Android inside the `android` subdirectory. So for example you will have:
+Unzip this and also the subdirecties in it and place it into your home directory. Now it looks like this:
 
 ```shell
-~/device-frame/ios/iphone_14_pro_max.png
-~/device-frame/ios/iphone_se.png
-~/device-frame/android/pixel_5.png
+~/Meta Devices/Phones/Apple iPhone 14 Pro Max/Device/iPhone 14 Pro Max – Space Black.png
+~/Meta Devices/Phones/Google Pixel 5/Device/Google Pixel 5 Just Black.png
+~/Meta Devices/Tablets/Apple iPad Air 2020/Device/Apple iPad Air 2020 Space Gray Portrait.png
+```
+
+See the [frames.json](./src/frames.json) file for available frames. Others can be added by adding them to the frames.json file.
+
+## Validating your frames
+
+This will check if all frames defined in frames.json are available on yor system:
+
+```shell
+device-frame validate
 ```
 
 ## Calling the script
 
-Add frames to all simulator screenshots in the `screens` directory:
+Add frames to all iOS simulator screenshots in the `~/screens` directory and put them in the `~/destination` directory:
 
 ```shell
-device-frame ios screens
+device-frame ios ~/screens ~/destination
 ```
 
-This will add a frame to all screenshots and put them in the currect directory with `_framed` appended to the name, for example:
-
-`screen1.png` will become `screen1_framed.png`.
-
-## Validating your frames
-
-This will validate all your frames to make sure they have the correct name and dimensions.
+Add frames to all Android simulator screenshots in the `~/screens` directory and put them in the `~/destination` directory:
 
 ```shell
-device-frame validate
+device-frame android ~/screens ~/destination
 ```
 
 ## Adding new devices
@@ -63,12 +56,8 @@ Devices are defined in the [frames.json](./src/frames.json) file. For a device f
         "innerWidth": 2580,
         "innerHeight": 5592,
         "cornerCutWidth": 80,
-        "inch": 6.7,
-        "name": "iphone_14_pro_max.png",
-        "devices": [
-            "iPhone 14 Pro Max",
-            "iPhone 15 Pro Max"
-        ]
+        "path": "Phones/Apple iPhone 14 Pro Max/Device/iPhone 14 Pro Max – Space Black.png",
+        "inch": 6.7
     }
 }
 ```
@@ -81,5 +70,4 @@ The key of a device is the `width`x`height` in pixels of the simulator screensho
 - `innerWidth` and `innerHeight` - The width and height of the inner frame - this is the size that is available for the simulator screenshot.
 - `cornerCutWidth` - The width and height of the 4 corners that should be cut out (made transparent). If this is not needed, specify 0 (zero).
 - `inch` - Not used in this script, just for informational purposes.
-- `name` - Name of the frame image.
-- `devices` - Not used in this script, just for informational purposes.
+- `path` - Path of the frame image relative to the root directory `Meta Devices`.
