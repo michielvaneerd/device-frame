@@ -71,3 +71,11 @@ The key of a device is the `width`x`height` in pixels of the simulator screensho
 - `cornerCutWidth` - The width and height of the 4 corners that should be cut out (made transparent). If this is not needed, specify 0 (zero).
 - `inch` - Not used in this script, just for informational purposes.
 - `path` - Path of the frame image relative to the root directory `Meta Devices`.
+
+## Other resources
+
+Official Apple downloads: https://developer.apple.com/design/resources/#product-bezels
+
+Apple device dimensions: https://developer.apple.com/help/app-store-connect/reference/screenshot-specifications/
+
+Official add Android device frames to your screenshots: https://developer.android.com/distribute/marketing-tools/device-art-generator

@@ -1,18 +1,5 @@
 {
     "ios": {
-        "1290x2796": {
-            "frameWidth": 3242,
-            "frameHeight": 6270,
-            "screenShotWidth": 1290,
-            "screenShotHeight": 2796,
-            "innerLeft": 334,
-            "innerTop": 310,
-            "innerWidth": 2580,
-            "innerHeight": 5592,
-            "cornerCutWidth": 80,
-            "path": "Phones/Apple iPhone 14 Pro Max/Device/iPhone 14 Pro Max – Space Black.png",
-            "inch": 6.7
-        },
         "750x1334": {
             "frameWidth": 1050,
             "frameHeight": 1934,
@@ -23,21 +10,51 @@
             "innerWidth": 750,
             "innerHeight": 1334,
             "cornerCutWidth": 0,
-            "path": "Phones/Apple iPhone SE/Device/Apple iPhone SE Black.png",
-            "inch": 4.7
+            "path": "~/Meta Devices/Phones/Apple iPhone SE/Device/Apple iPhone SE Black.png",
+            "inch": 4.7,
+            "devices": [
+                "iPhone SE (3rd generation, 2nd generation)",
+                "iPhone 8",
+                "iPhone 7",
+                "iPhone 6s",
+                "iPhone 6"
+            ]
         },
-        "1640x2360": {
-            "frameWidth": 1940,
-            "frameHeight": 2660,
-            "screenShotWidth": 1640,
-            "screenShotHeight": 2360,
-            "innerLeft": 150,
-            "innerTop": 150,
-            "innerWidth": 1640,
-            "innerHeight": 2360,
-            "cornerCutWidth": 0,
-            "path": "Tablets/Apple iPad Air 2020/Device/Apple iPad Air 2020 Space Gray Portrait.png",
-            "inch": 10.9
+        "1290x2796": {
+            "frameWidth": 3242,
+            "frameHeight": 6270,
+            "screenShotWidth": 1290,
+            "screenShotHeight": 2796,
+            "innerLeft": 334,
+            "innerTop": 310,
+            "innerWidth": 2580,
+            "innerHeight": 5592,
+            "cornerCutWidth": 80,
+            "path": "~/Meta Devices/Phones/Apple iPhone 14 Pro Max/Device/iPhone 14 Pro Max – Space Black.png",
+            "inch": 6.7,
+            "devices": [
+                "iPhone 15 Pro Max",
+                "iPhone 15 Plus",
+                "iPhone 14 Pro Max"
+            ]
+        },
+        "1179x2556": {
+            "frameWidth": 3022,
+            "frameHeight": 5788,
+            "screenShotWidth": 1179,
+            "screenShotHeight": 2556,
+            "innerLeft": 336,
+            "innerTop": 316,
+            "innerWidth": 2358,
+            "innerHeight": 5112,
+            "cornerCutWidth": 80,
+            "path": "~/Meta Devices/Phones/Apple iPhone 14 Pro/Device/iPhone 14 Pro – Space Black.png",
+            "inch": 6.1,
+            "devices": [
+                "iPhone 15 Pro",
+                "iPhone 15",
+                "iPhone 14 Pro"
+            ]
         }
     },
     "android": {
@@ -51,7 +68,7 @@
             "innerWidth": 1080,
             "innerHeight": 2340,
             "cornerCutWidth": 0,
-            "path": "Phones/Google Pixel 5/Device/Google Pixel 5 Just Black.png",
+            "path": "~/Meta Devices/Phones/Google Pixel 5/Device/Google Pixel 5 Just Black.png",
             "inch": 6
         }
     }

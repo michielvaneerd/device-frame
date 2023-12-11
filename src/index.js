@@ -4,17 +4,13 @@ const path = require('path');
 const homeDir = require('os').homedir();
 const frames = require("./frames.json");
 
-const frameCache = {}; // Cache for frames sharp instances
-
 function die(message) {
     console.log(message);
     process.exit();
 }
 
-const framesPath = `${homeDir}/Meta Devices`;
-
-if (!fs.existsSync(framesPath)) {
-    die(`Path to the device frames doesn't exist. Download them from https://design.facebook.com/toolsandresources/devices/ and put them in your home directory.`);
+function replaceWithHomedir(path) {
+    return path.replace('~', homeDir);
 }
 
 function getComposite(top, left, width, height) {
@@ -33,34 +29,38 @@ function getComposite(top, left, width, height) {
 }
 
 async function frameScreen(screenFullPath, os, destinationPath) {
-    const screenBuffer = await sharp(screenFullPath).toFormat('png').toBuffer({
+    let screenBuffer = await sharp(screenFullPath).toFormat('png').toBuffer({
         resolveWithObject: true
     });
+
     const screenWidth = screenBuffer.info.width;
     const screenHeight = screenBuffer.info.height;
-    const deviceKey = `${screenWidth}x${screenHeight}`;
+    const isLandscape = screenWidth > screenHeight;
+    // Sizes without portrait / landscape
+    const screenAbsoluteWidth = isLandscape ? screenHeight : screenWidth;
+    const screenAbsoluteHeight = isLandscape ? screenWidth : screenHeight;
+
+    const deviceKey = `${screenAbsoluteWidth}x${screenAbsoluteHeight}`;
     if (!(deviceKey in frames[os])) {
         throw new Error(`Unknown screenshot for ${screenFullPath} - os = ${os} and key = ${deviceKey}`);
     }
 
     const device = frames[os][deviceKey];
-    const ratio = device.innerWidth == screenWidth ? 1 : ((device.innerWidth - screenWidth) / device.innerWidth);
-    const deviceInnerWidth = screenWidth;
-    const deviceInnerHeight = device.innerHeight * ratio;
+    const devicePath = replaceWithHomedir(device.path);
+    const ratio = device.innerWidth == screenAbsoluteWidth ? 1 : ((device.innerWidth - screenAbsoluteWidth) / device.innerWidth);
+    const deviceAbsoluteInnerWidth = isLandscape ? (device.innerHeight * ratio) : (device.innerWidth * ratio);
+    const deviceAbsoluteInnerHeight = isLandscape ? (device.innerWidth * ratio) : (device.innerHeight * ratio);
+    const deviceAbsoluteFrameHeight = isLandscape ? (device.frameWidth * ratio) : (device.frameHeight * ratio);
+    const deviceAbsoluteFrameWidth = isLandscape ? (device.frameHeight * ratio) : (device.frameWidth * ratio);
     const cornerCutWidth = device.cornerCutWidth * ratio;
 
-    const framePath = `${framesPath}/${device.path}`;
-    const frameCacheKey = `${framePath}-${device.frameWidth * ratio}`;
-    if (!(frameCacheKey in frameCache)) {
-        frameCache[frameCacheKey] = sharp(framePath).resize(device.frameWidth * ratio).toFormat('png');
-    }
-    const frameBuffer = await frameCache[frameCacheKey].clone().toBuffer();
+    const frameBuffer = await sharp(devicePath).rotate(isLandscape ? -90 : 0).resize(deviceAbsoluteFrameWidth).toFormat('png').toBuffer();
 
     const composites = cornerCutWidth ? [
         getComposite(0, 0, cornerCutWidth, cornerCutWidth),
-        getComposite(0, deviceInnerWidth - cornerCutWidth, cornerCutWidth, cornerCutWidth),
-        getComposite(deviceInnerHeight - cornerCutWidth, 0, cornerCutWidth, cornerCutWidth),
-        getComposite(deviceInnerHeight - cornerCutWidth, deviceInnerWidth - cornerCutWidth, cornerCutWidth, cornerCutWidth)
+        getComposite(0, deviceAbsoluteInnerWidth - cornerCutWidth, cornerCutWidth, cornerCutWidth),
+        getComposite(deviceAbsoluteInnerHeight - cornerCutWidth, 0, cornerCutWidth, cornerCutWidth),
+        getComposite(deviceAbsoluteInnerHeight - cornerCutWidth, deviceAbsoluteInnerWidth - cornerCutWidth, cornerCutWidth, cornerCutWidth)
     ] : [];
     composites.push({
         input: screenBuffer.data,
@@ -69,29 +69,28 @@ async function frameScreen(screenFullPath, os, destinationPath) {
 
     const image = await sharp({
         create: {
-            width: deviceInnerWidth,
-            height: deviceInnerHeight,
+            width: deviceAbsoluteInnerWidth,
+            height: deviceAbsoluteInnerHeight,
             channels: 4,
             background: { r: 0, g: 0, b: 0, alpha: 0 }
         }
     }).composite(composites).toFormat('png').toBuffer();
 
     const screenPathParts = path.parse(screenFullPath);
-
     const newFile = `${screenPathParts.name}_framed${screenPathParts.ext}`;
-
+    
     await sharp({
         create: {
-            width: device.frameWidth * ratio,
-            height: device.frameHeight * ratio,
+            width: deviceAbsoluteFrameWidth,
+            height: deviceAbsoluteFrameHeight,
             channels: 4,
             background: { r: 0, g: 0, b: 0, alpha: 0 }
         }
     }).composite([
         {
             input: image,
-            top: device.innerTop * ratio,
-            left: device.innerLeft * ratio,
+            top: isLandscape ? ((device.frameWidth - device.innerWidth - device.innerLeft) * ratio) : (device.innerTop * ratio),
+            left: isLandscape ? (device.innerTop * ratio) : (device.innerLeft * ratio),
         },
         {
             input: frameBuffer,
@@ -107,12 +106,12 @@ async function validate() {
     for (const os in frames) {
         for (const dim in frames[os]) {
             const device = frames[os][dim];
-            const path = `${framesPath}/${device.path}`;
-            if (!fs.existsSync(path)) {
-                messages.push(`Frame ${path} doesn't exist`);
+            const devicePath = replaceWithHomedir(device.path);
+            if (!fs.existsSync(devicePath)) {
+                messages.push(`Frame ${devicePath} doesn't exist`);
                 continue;
             }
-            const buff = await sharp(path).toFormat('png').toBuffer({
+            const buff = await sharp(devicePath).toFormat('png').toBuffer({
                 resolveWithObject: true
             });
             if (dim !== `${device.screenShotWidth}x${device.screenShotHeight}`) {
@@ -120,10 +119,10 @@ async function validate() {
                 continue;
             }
             if (buff.info.width != device.frameWidth || buff.info.height != device.frameHeight) {
-                messages.push(`Size of ${path} (${buff.info.width}x${buff.info.height}) is different than the size in the frames.json file ${device.frameWidth}x${device.frameHeight}`);
+                messages.push(`Size of ${devicePath} (${buff.info.width}x${buff.info.height}) is different than the size in the frames.json file ${device.frameWidth}x${device.frameHeight}`);
                 continue;
             }
-            messages.push(`OK for ${path}`);
+            messages.push(`OK for ${devicePath}`);
         }
     }
     messages.forEach(function (msg) {

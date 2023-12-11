@@ -1,0 +1,110 @@
+{
+    "ios": {
+        "750x1334": {
+            "frameWidth": 1050,
+            "frameHeight": 1934,
+            "screenShotWidth": 750,
+            "screenShotHeight": 1334,
+            "innerLeft": 150,
+            "innerTop": 300,
+            "innerWidth": 750,
+            "innerHeight": 1334,
+            "cornerCutWidth": 0,
+            "path": "~/Meta Devices/Phones/Apple iPhone SE/Device/Apple iPhone SE Black.png",
+            "inch": 4.7
+        },
+        "1290x2796": {
+            "frameWidth": 1530,
+            "frameHeight": 3036,
+            "screenShotWidth": 1290,
+            "screenShotHeight": 2796,
+            "innerLeft": 120,
+            "innerTop": 120,
+            "innerWidth": 1290,
+            "innerHeight": 2796,
+            "cornerCutWidth": 40,
+            "path": "~/Apple Devices/iPhone 15 Plus - Black - Portrait.png",
+            "inch": 6.7,
+            "devices": [
+                "iPhone 15 Pro Max",
+                "iPhone 15 Plus",
+                "iPhone 14 Pro Max"
+            ]
+        },
+        "1179x2556": {
+            "frameWidth": 1419,
+            "frameHeight": 2556,
+            "screenShotWidth": 1179,
+            "screenShotHeight": 2796,
+            "innerLeft": 120,
+            "innerTop": 120,
+            "innerWidth": 1179,
+            "innerHeight": 2556,
+            "cornerCutWidth": 40,
+            "path": "~/Apple Devices/iPhone 15 Pro - Black Titanium - Portrait.png",
+            "inch": 6.1,
+            "devices": [
+                "iPhone 15 Pro",
+                "iPhone 15",
+                "iPhone 14 Pro"
+            ]
+        },
+        "1640x2360": {
+            "frameWidth": 1940,
+            "frameHeight": 2660,
+            "screenShotWidth": 1640,
+            "screenShotHeight": 2360,
+            "innerLeft": 150,
+            "innerTop": 150,
+            "innerWidth": 1640,
+            "innerHeight": 2360,
+            "cornerCutWidth": 0,
+            "path": "~/Meta Devices/Tablets/Apple iPad Air 2020/Device/Apple iPad Air 2020 Space Gray Portrait.png",
+            "inch": 10.9
+        },
+        "1488x2266": {
+            "frameWidth": 1780,
+            "frameHeight": 2550,
+            "screenShotWidth": 1488,
+            "screenShotHeight": 2266,
+            "innerLeft": 146,
+            "innerTop": 142,
+            "innerWidth": 1488,
+            "innerHeight": 2266,
+            "cornerCutWidth": 0,
+            "path": "~/Apple Devices/iPad mini - Starlight - Portrait.png",
+            "inch": 11,
+            "devices": [
+                "iPad mini (6th generation)"
+            ]
+        },
+        "1668x2388": {
+            "frameWidth": 1890,
+            "frameHeight": 2610,
+            "screenShotWidth": 1668,
+            "screenShotHeight": 2388,
+            "innerLeft": 111,
+            "innerTop": 111,
+            "innerWidth": 1668,
+            "innerHeight": 2388,
+            "cornerCutWidth": 0,
+            "path": "~/Apple Devices/iPad Pro 11 - Space Gray - Portrait.png",
+            "inch": 11
+        }
+    },
+    "android": {
+        "1080x2340": {
+            "frameWidth": 1480,
+            "frameHeight": 2740,
+            "screenShotWidth": 1080,
+            "screenShotHeight": 2340,
+            "innerLeft": 200,
+            "innerTop": 200,
+            "innerWidth": 1080,
+            "innerHeight": 2340,
+            "cornerCutWidth": 0,
+            "path": "~/Meta Devices/Phones/Google Pixel 5/Device/Google Pixel 5 Just Black.png",
+            "inch": 6
+        }
+    }
+}
