@@ -1,22 +1,26 @@
 # Device frame
 
-Adds a device frame to all simulator screenshots in a directory.
+Adds a device frame to simulator screenshots in a directory in portrait and landscape orientation.
+
+Currently supports many different iPhones and iPads and the Google Pixel 5. See for all supported devices the [frames.json](./src/frames.json) file.
 
 ## Getting started
 
-Download the device frames from:
+Download the device frames from the following locations:
 
-https://design.facebook.com/toolsandresources/devices/
+- https://design.facebook.com/toolsandresources/devices/
+- https://developer.apple.com/design/resources/#product-bezels
 
-Unzip this and also the subdirecties in it and place it into your home directory. Now it looks like this:
+Unzip them and place them somewhere on your system. Now you have something like:
 
 ```shell
 ~/Meta Devices/Phones/Apple iPhone 14 Pro Max/Device/iPhone 14 Pro Max – Space Black.png
 ~/Meta Devices/Phones/Google Pixel 5/Device/Google Pixel 5 Just Black.png
 ~/Meta Devices/Tablets/Apple iPad Air 2020/Device/Apple iPad Air 2020 Space Gray Portrait.png
+~/Apple Devices/iPad mini - Starlight - Portrait.png
 ```
 
-See the [frames.json](./src/frames.json) file for available frames. Others can be added by adding them to the frames.json file.
+The [frames.json](./src/frames.json) file expects the device frames in a specific location. If you have a different setup, alter this file accordingly.
 
 ## Validating your frames
 
@@ -46,19 +50,26 @@ Devices are defined in the [frames.json](./src/frames.json) file. For a device f
 
 ```json
 {
-    "1290x2796": {
-        "frameWidth": 3242,
-        "frameHeight": 6270,
-        "screenShotWidth": 1290,
-        "screenShotHeight": 2796,
-        "innerLeft": 334,
-        "innerTop": 310,
-        "innerWidth": 2580,
-        "innerHeight": 5592,
-        "cornerCutWidth": 80,
-        "path": "Phones/Apple iPhone 14 Pro Max/Device/iPhone 14 Pro Max – Space Black.png",
-        "inch": 6.7
-    }
+    "1488x2266": {
+        "frameWidth": 1780,
+        "frameHeight": 2550,
+        "screenShotWidth": 1488,
+        "screenShotHeight": 2266,
+        "innerLeft": 146,
+        "innerTop": 142,
+        "innerWidth": 1488,
+        "innerHeight": 2266,
+        "cornerCutWidth": 0,
+        "path": "~/Apple Devices/iPad mini - Starlight - Portrait.png",
+        "inch": 11,
+        "devices": [
+            "iPad mini (6th generation)"
+        ],
+        "download": [
+            "https://developer.apple.com/design/resources/#product-bezels",
+            "https://devimages-cdn.apple.com/design/resources/download/Bezel-iPad-mini.dmg"
+        ]
+    },
 }
 ```
 
@@ -69,13 +80,13 @@ The key of a device is the `width`x`height` in pixels of the simulator screensho
 - `innerLeft` and `innerTop` - The left and top position of the start of the inner frame - this is where the simulator screenshot should be placed.
 - `innerWidth` and `innerHeight` - The width and height of the inner frame - this is the size that is available for the simulator screenshot.
 - `cornerCutWidth` - The width and height of the 4 corners that should be cut out (made transparent). If this is not needed, specify 0 (zero).
-- `inch` - Not used in this script, just for informational purposes.
 - `path` - Path of the frame image relative to the root directory `Meta Devices`.
+- `inch` - Not used in this script, just for informational purposes.
+- `devices` - Not used in this script, just for informational purposes.
+- `download` - Not used in this script, just for informational purposes.
 
 ## Other resources
 
-Official Apple downloads: https://developer.apple.com/design/resources/#product-bezels
-
-Apple device dimensions: https://developer.apple.com/help/app-store-connect/reference/screenshot-specifications/
-
-Official add Android device frames to your screenshots: https://developer.android.com/distribute/marketing-tools/device-art-generator
+- Official Apple downloads: https://developer.apple.com/design/resources/#product-bezels
+- Apple device dimensions: https://developer.apple.com/help/app-store-connect/reference/screenshot-specifications/
+- Official add Android device frames to your screenshots: https://developer.android.com/distribute/marketing-tools/device-art-generator
