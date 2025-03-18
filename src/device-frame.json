@@ -9,7 +9,7 @@
             "innerTop": 300,
             "innerWidth": 750,
             "innerHeight": 1334,
-            "cornerCutWidth": 0,
+            "cornerCutSize": 0,
             "path": "~/Meta Devices/Phones/Apple iPhone SE/Device/Apple iPhone SE Black.png",
             "inch": 4.7,
             "devices": [
@@ -32,7 +32,7 @@
             "innerTop": 310,
             "innerWidth": 2580,
             "innerHeight": 5592,
-            "cornerCutWidth": 80,
+            "cornerCutSize": 80,
             "path": "~/Meta Devices/Phones/Apple iPhone 14 Pro Max/Device/iPhone 14 Pro Max – Space Black.png",
             "inch": 6.7,
             "devices": [
@@ -53,7 +53,7 @@
             "innerTop": 316,
             "innerWidth": 2358,
             "innerHeight": 5112,
-            "cornerCutWidth": 80,
+            "cornerCutSize": 80,
             "path": "~/Meta Devices/Phones/Apple iPhone 14 Pro/Device/iPhone 14 Pro – Space Black.png",
             "inch": 6.1,
             "devices": [
@@ -65,6 +65,25 @@
                 "https://design.facebook.com/toolsandresources/devices/"
             ]
         },
+        "1320x2868": {
+            "frameWidth": 1470,
+            "frameHeight": 3000,
+            "screenShotWidth": 1320,
+            "screenShotHeight": 2868,
+            "innerLeft": 75,
+            "innerTop": 66,
+            "innerWidth": 1320,
+            "innerHeight": 2868,
+            "cornerCutSize": 55,
+            "path": "~/Apple Devices/iPhone 16 Pro Max - Black Titanium - Portrait.png",
+            "inch": 6.9,
+            "devices": [
+                "iPhone 16 Pro Max"
+            ],
+            "download": [
+                "https://developer.apple.com/design/resources/#product-bezels"
+            ]
+        },
         "1488x2266": {
             "frameWidth": 1780,
             "frameHeight": 2550,
@@ -74,7 +93,7 @@
             "innerTop": 142,
             "innerWidth": 1488,
             "innerHeight": 2266,
-            "cornerCutWidth": 0,
+            "cornerCutSize": 0,
             "path": "~/Apple Devices/iPad mini - Starlight - Portrait.png",
             "inch": 11,
             "devices": [
@@ -94,7 +113,7 @@
             "innerTop": 200,
             "innerWidth": 2048,
             "innerHeight": 2732,
-            "cornerCutWidth": 0,
+            "cornerCutSize": 0,
             "path": "~/Meta Devices/Tablets/Apple iPad Pro/Device/Device without Pencil/Apple iPad Pro 13 Space Gray - Portrait.png",
             "inch": 12.9,
             "devices": [
@@ -113,7 +132,7 @@
             "innerTop": 111,
             "innerWidth": 1668,
             "innerHeight": 2388,
-            "cornerCutWidth": 0,
+            "cornerCutSize": 0,
             "path": "~/Apple Devices/iPad Pro 11 - Space Gray - Portrait.png",
             "inch": 11,
             "devices": [
@@ -133,7 +152,7 @@
             "innerTop": 150,
             "innerWidth": 1640,
             "innerHeight": 2360,
-            "cornerCutWidth": 0,
+            "cornerCutSize": 0,
             "path": "~/Meta Devices/Tablets/Apple iPad Air 2020/Device/Apple iPad Air 2020 Space Gray Portrait.png",
             "inch": 11,
             "devices": [
@@ -154,7 +173,7 @@
             "innerTop": 200,
             "innerWidth": 1080,
             "innerHeight": 2340,
-            "cornerCutWidth": 0,
+            "cornerCutSize": 0,
             "path": "~/Meta Devices/Phones/Google Pixel 5/Device/Google Pixel 5 Just Black.png",
             "inch": 6,
             "devices": [

@@ -2,7 +2,7 @@
 
 Adds a device frame to simulator screenshots in a directory in portrait and landscape orientation.
 
-Currently supports many different iPhones and iPads and the Google Pixel 5. See for all supported devices the [frames.json](./src/frames.json) file.
+Currently supports many different iPhones and iPads and the Google Pixel 5. See for all supported devices the [device-frame.json](./src/device-frame.json) file.
 
 ## Getting started
 
@@ -20,11 +20,11 @@ Unzip them and place them somewhere on your system. Now you have something like:
 ~/Apple Devices/iPad mini - Starlight - Portrait.png
 ```
 
-The [frames.json](./src/frames.json) file expects the device frames in a specific location. If you have a different setup, alter this file accordingly.
+The [device-frame.json](./src/device-frame.json) file expects the device frames in a specific location. If you have a different setup, alter this file accordingly.
 
 ## Validating your frames
 
-This will check if all frames defined in frames.json are available on yor system:
+This will check if all frames defined in device-frame.json are available on yor system:
 
 ```shell
 device-frame validate
@@ -46,7 +46,8 @@ device-frame android ~/screens ~/destination
 
 ## Adding new devices
 
-Devices are defined in the [frames.json](./src/frames.json) file. For a device frame to be used, you need to add an entry to this file and download a device frame PNG.
+Devices are defined in the [device-frame.json](./src/device-frame.json) file.
+If you want to add a device, copy this file to `~/device-frame.json` and add the entry there. The script will first look for this file and then for the default one and merge the two with your copied file prioritized.
 
 ```json
 {
@@ -59,7 +60,7 @@ Devices are defined in the [frames.json](./src/frames.json) file. For a device f
         "innerTop": 142,
         "innerWidth": 1488,
         "innerHeight": 2266,
-        "cornerCutWidth": 0,
+        "cornerCutSize": 0,
         "path": "~/Apple Devices/iPad mini - Starlight - Portrait.png",
         "inch": 11,
         "devices": [
@@ -79,8 +80,8 @@ The key of a device is the `width`x`height` in pixels of the simulator screensho
 - `screenShotWidth` and `screenShotHeight` - Width and height of the simulator screenshot images, so this will be the same as the key of this device.
 - `innerLeft` and `innerTop` - The left and top position of the start of the inner frame - this is where the simulator screenshot should be placed.
 - `innerWidth` and `innerHeight` - The width and height of the inner frame - this is the size that is available for the simulator screenshot.
-- `cornerCutWidth` - The width and height of the 4 corners that should be cut out (made transparent). If this is not needed, specify 0 (zero).
-- `path` - Path of the frame image relative to the root directory `Meta Devices`.
+- `cornerCutSize` - The width and height of the square in the 4 corners that should be cut out (made transparent). If this is not needed, specify 0 (zero).
+- `path` - Path of the frame image.
 - `inch` - Not used in this script, just for informational purposes.
 - `devices` - Not used in this script, just for informational purposes.
 - `download` - Not used in this script, just for informational purposes.

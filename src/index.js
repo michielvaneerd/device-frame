@@ -2,7 +2,7 @@ const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
 const homeDir = require('os').homedir();
-const frames = require("./frames.json");
+const frames = require("./device-frame.json");
 
 function die(message) {
     console.log(message);
@@ -52,15 +52,15 @@ async function frameScreen(screenFullPath, os, destinationPath) {
     const deviceAbsoluteInnerHeight = isLandscape ? (device.innerWidth * ratio) : (device.innerHeight * ratio);
     const deviceAbsoluteFrameHeight = isLandscape ? (device.frameWidth * ratio) : (device.frameHeight * ratio);
     const deviceAbsoluteFrameWidth = isLandscape ? (device.frameHeight * ratio) : (device.frameWidth * ratio);
-    const cornerCutWidth = device.cornerCutWidth * ratio;
+    const cornerCutSize = device.cornerCutSize * ratio;
 
     const frameBuffer = await sharp(devicePath).rotate(isLandscape ? -90 : 0).resize(deviceAbsoluteFrameWidth).toFormat('png').toBuffer();
 
-    const composites = cornerCutWidth ? [
-        getComposite(0, 0, cornerCutWidth, cornerCutWidth),
-        getComposite(0, deviceAbsoluteInnerWidth - cornerCutWidth, cornerCutWidth, cornerCutWidth),
-        getComposite(deviceAbsoluteInnerHeight - cornerCutWidth, 0, cornerCutWidth, cornerCutWidth),
-        getComposite(deviceAbsoluteInnerHeight - cornerCutWidth, deviceAbsoluteInnerWidth - cornerCutWidth, cornerCutWidth, cornerCutWidth)
+    const composites = cornerCutSize ? [
+        getComposite(0, 0, cornerCutSize, cornerCutSize),
+        getComposite(0, deviceAbsoluteInnerWidth - cornerCutSize, cornerCutSize, cornerCutSize),
+        getComposite(deviceAbsoluteInnerHeight - cornerCutSize, 0, cornerCutSize, cornerCutSize),
+        getComposite(deviceAbsoluteInnerHeight - cornerCutSize, deviceAbsoluteInnerWidth - cornerCutSize, cornerCutSize, cornerCutSize)
     ] : [];
     composites.push({
         input: screenBuffer.data,
@@ -78,7 +78,7 @@ async function frameScreen(screenFullPath, os, destinationPath) {
 
     const screenPathParts = path.parse(screenFullPath);
     const newFile = `${screenPathParts.name}_framed${screenPathParts.ext}`;
-    
+
     await sharp({
         create: {
             width: deviceAbsoluteFrameWidth,
@@ -119,7 +119,7 @@ async function validate() {
                 continue;
             }
             if (buff.info.width != device.frameWidth || buff.info.height != device.frameHeight) {
-                messages.push(`Size of ${devicePath} (${buff.info.width}x${buff.info.height}) is different than the size in the frames.json file ${device.frameWidth}x${device.frameHeight}`);
+                messages.push(`Size of ${devicePath} (${buff.info.width}x${buff.info.height}) is different than the size in the device-frame.json file ${device.frameWidth}x${device.frameHeight}`);
                 continue;
             }
             messages.push(`OK for ${devicePath}`);
@@ -141,6 +141,20 @@ async function validate() {
         die('Missing os or path argument.');
     }
 
+    // Merge device-frame.json files if needed
+    if (fs.existsSync(`${homeDir}/device-frame.json`)) {
+        const newFrames = require(`${homeDir}/device-frame.json`);
+        for (platform in newFrames) {
+            if (!(platform in frames)) {
+                frames[platform] = newFrames[platform];
+            } else {
+                for (size in newFrames[platform]) {
+                    frames[platform][size] = newFrames[platform][size];
+                }
+            }
+        }
+    }
+
     const os = process.argv[2];
     if (Object.keys(frames).indexOf(os) === -1) {
         die(`Unknown os ${os}`);
@@ -157,7 +171,7 @@ async function validate() {
     }
 
     const screens = fs.readdirSync(screensPath).filter((value) => path.extname(value) === '.png');
-    
+
     for (const screen of screens) {
         try {
             await frameScreen(path.join(screensPath, screen), os, destinationPath);
