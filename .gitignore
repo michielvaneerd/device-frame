@@ -1,0 +1,5 @@
+frames
+*.png
+node_modules
+.DS_Store
+screens

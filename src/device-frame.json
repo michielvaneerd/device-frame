@@ -1,0 +1,187 @@
+{
+    "ios": {
+        "750x1334": {
+            "frameWidth": 1050,
+            "frameHeight": 1934,
+            "screenShotWidth": 750,
+            "screenShotHeight": 1334,
+            "innerLeft": 150,
+            "innerTop": 300,
+            "innerWidth": 750,
+            "innerHeight": 1334,
+            "cornerCutSize": 0,
+            "path": "~/Meta Devices/Phones/Apple iPhone SE/Device/Apple iPhone SE Black.png",
+            "inch": 4.7,
+            "devices": [
+                "iPhone SE (3rd generation, 2nd generation)",
+                "iPhone 8",
+                "iPhone 7",
+                "iPhone 6s",
+                "iPhone 6"
+            ],
+            "download": [
+                "https://design.facebook.com/toolsandresources/devices/"
+            ]
+        },
+        "1290x2796": {
+            "frameWidth": 3242,
+            "frameHeight": 6270,
+            "screenShotWidth": 1290,
+            "screenShotHeight": 2796,
+            "innerLeft": 334,
+            "innerTop": 310,
+            "innerWidth": 2580,
+            "innerHeight": 5592,
+            "cornerCutSize": 80,
+            "path": "~/Meta Devices/Phones/Apple iPhone 14 Pro Max/Device/iPhone 14 Pro Max – Space Black.png",
+            "inch": 6.7,
+            "devices": [
+                "iPhone 15 Pro Max",
+                "iPhone 15 Plus",
+                "iPhone 14 Pro Max"
+            ],
+            "download": [
+                "https://design.facebook.com/toolsandresources/devices/"
+            ]
+        },
+        "1179x2556": {
+            "frameWidth": 3022,
+            "frameHeight": 5788,
+            "screenShotWidth": 1179,
+            "screenShotHeight": 2556,
+            "innerLeft": 336,
+            "innerTop": 316,
+            "innerWidth": 2358,
+            "innerHeight": 5112,
+            "cornerCutSize": 80,
+            "path": "~/Meta Devices/Phones/Apple iPhone 14 Pro/Device/iPhone 14 Pro – Space Black.png",
+            "inch": 6.1,
+            "devices": [
+                "iPhone 15 Pro",
+                "iPhone 15",
+                "iPhone 14 Pro"
+            ],
+            "download": [
+                "https://design.facebook.com/toolsandresources/devices/"
+            ]
+        },
+        "1320x2868": {
+            "frameWidth": 1470,
+            "frameHeight": 3000,
+            "screenShotWidth": 1320,
+            "screenShotHeight": 2868,
+            "innerLeft": 75,
+            "innerTop": 66,
+            "innerWidth": 1320,
+            "innerHeight": 2868,
+            "cornerCutSize": 55,
+            "path": "~/Apple Devices/iPhone 16 Pro Max - Black Titanium - Portrait.png",
+            "inch": 6.9,
+            "devices": [
+                "iPhone 16 Pro Max"
+            ],
+            "download": [
+                "https://developer.apple.com/design/resources/#product-bezels"
+            ]
+        },
+        "1488x2266": {
+            "frameWidth": 1780,
+            "frameHeight": 2550,
+            "screenShotWidth": 1488,
+            "screenShotHeight": 2266,
+            "innerLeft": 146,
+            "innerTop": 142,
+            "innerWidth": 1488,
+            "innerHeight": 2266,
+            "cornerCutSize": 0,
+            "path": "~/Apple Devices/iPad mini - Starlight - Portrait.png",
+            "inch": 11,
+            "devices": [
+                "iPad mini (6th generation)"
+            ],
+            "download": [
+                "https://developer.apple.com/design/resources/#product-bezels",
+                "https://devimages-cdn.apple.com/design/resources/download/Bezel-iPad-mini.dmg"
+            ]
+        },
+        "2048x2732": {
+            "frameWidth": 2448,
+            "frameHeight": 3132,
+            "screenShotWidth": 2048,
+            "screenShotHeight": 2732,
+            "innerLeft": 200,
+            "innerTop": 200,
+            "innerWidth": 2048,
+            "innerHeight": 2732,
+            "cornerCutSize": 0,
+            "path": "~/Meta Devices/Tablets/Apple iPad Pro/Device/Device without Pencil/Apple iPad Pro 13 Space Gray - Portrait.png",
+            "inch": 12.9,
+            "devices": [
+                "iPad Pro (2nd generation)"
+            ],
+            "download": [
+                "https://design.facebook.com/toolsandresources/devices/"
+            ]
+        },
+        "1668x2388": {
+            "frameWidth": 1890,
+            "frameHeight": 2610,
+            "screenShotWidth": 1668,
+            "screenShotHeight": 2388,
+            "innerLeft": 111,
+            "innerTop": 111,
+            "innerWidth": 1668,
+            "innerHeight": 2388,
+            "cornerCutSize": 0,
+            "path": "~/Apple Devices/iPad Pro 11 - Space Gray - Portrait.png",
+            "inch": 11,
+            "devices": [
+                "iPad Pro (4th generation, 3rd generation)"
+            ],
+            "download": [
+                "https://developer.apple.com/design/resources/#product-bezels",
+                "https://devimages-cdn.apple.com/design/resources/download/Bezel-iPad-Pro.dmg"
+            ]
+        },
+        "1640x2360": {
+            "frameWidth": 1940,
+            "frameHeight": 2660,
+            "screenShotWidth": 1640,
+            "screenShotHeight": 2360,
+            "innerLeft": 150,
+            "innerTop": 150,
+            "innerWidth": 1640,
+            "innerHeight": 2360,
+            "cornerCutSize": 0,
+            "path": "~/Meta Devices/Tablets/Apple iPad Air 2020/Device/Apple iPad Air 2020 Space Gray Portrait.png",
+            "inch": 11,
+            "devices": [
+                "iPad Air (5th generation, 4th generation)"
+            ],
+            "download": [
+                "https://design.facebook.com/toolsandresources/devices/"
+            ]
+        }
+    },
+    "android": {
+        "1080x2340": {
+            "frameWidth": 1480,
+            "frameHeight": 2740,
+            "screenShotWidth": 1080,
+            "screenShotHeight": 2340,
+            "innerLeft": 200,
+            "innerTop": 200,
+            "innerWidth": 1080,
+            "innerHeight": 2340,
+            "cornerCutSize": 0,
+            "path": "~/Meta Devices/Phones/Google Pixel 5/Device/Google Pixel 5 Just Black.png",
+            "inch": 6,
+            "devices": [
+                "Google Pixel 5"
+            ],
+            "download": [
+                "https://design.facebook.com/toolsandresources/devices/"
+            ]
+        }
+    }
+}
