@@ -59,10 +59,51 @@
             "devices": [
                 "iPhone 15 Pro",
                 "iPhone 15",
+                "iPhone 16",
                 "iPhone 14 Pro"
             ],
             "download": [
                 "https://design.facebook.com/toolsandresources/devices/"
+            ]
+        },
+        "1206x2622": {
+            "frameWidth": 1350,
+            "frameHeight": 2760,
+            "screenShotWidth": 1206,
+            "screenShotHeight": 2622,
+            "innerLeft": 72,
+            "innerTop": 69,
+            "innerWidth": 1206,
+            "innerHeight": 2622,
+            "cornerCutSize": 55,
+            "path": "~/Apple Devices/iPhone 17 - Black - Portrait.png",
+            "inch": 6.3,
+            "devices": [
+                "iPhone 17",
+                "iPhone 16 Pro",
+                "iPhone 17 Pro"
+            ],
+            "download": [
+                "https://developer.apple.com/design/resources/#product-bezels"
+            ]
+        },
+        "1260x2736": {
+            "frameWidth": 1380,
+            "frameHeight": 2880,
+            "screenShotWidth": 1260,
+            "screenShotHeight": 2736,
+            "innerLeft": 60,
+            "innerTop": 72,
+            "innerWidth": 1260,
+            "innerHeight": 2736,
+            "cornerCutSize": 55,
+            "path": "~/Apple Devices/iPhone Air - Space Black - Portrait.png",
+            "inch": 6.5,
+            "devices": [
+                "iPhone Air"
+            ],
+            "download": [
+                "https://developer.apple.com/design/resources/#product-bezels"
             ]
         },
         "1320x2868": {
@@ -78,7 +119,8 @@
             "path": "~/Apple Devices/iPhone 16 Pro Max - Black Titanium - Portrait.png",
             "inch": 6.9,
             "devices": [
-                "iPhone 16 Pro Max"
+                "iPhone 16 Pro Max",
+                "iPhone 17 Pro Max"
             ],
             "download": [
                 "https://developer.apple.com/design/resources/#product-bezels"

@@ -90,6 +90,8 @@ The key of a device is the `width`x`height` in pixels of the simulator screensho
 - `devices` - Not used in this script, just for informational purposes.
 - `download` - Not used in this script, just for informational purposes.
 
+![Example of device frame properties](./device-frame-example.png "Example of device frame properties")
+
 ## Other resources
 
 - Official Apple downloads: https://developer.apple.com/design/resources/#product-bezels
